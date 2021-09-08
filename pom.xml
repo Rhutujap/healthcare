@@ -33,6 +33,20 @@
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<sharedLibraries>
+						<sharedLibrary>
+							<groupId>postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+						</sharedLibrary>
+					</sharedLibraries>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
 				<version>3.3.5</version>
 				<extensions>true</extensions>
 				<configuration>
