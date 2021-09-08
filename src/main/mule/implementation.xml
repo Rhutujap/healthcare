@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="GetpatientimplementationFlow" doc:id="520e0539-8b03-4a54-9ccc-cafc717827a7" >
+		<salesforce:query doc:name="Query" doc:id="3a74195e-6f13-4e9b-ba4e-1a3022274571" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT pid__c,Name, BillingAddress, Fax FROM Account]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="5d67abdc-7628-4e11-ac76-241d13a0e70f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="postPatientImpl" doc:id="5c383971-a4f7-4711-8919-aa79cffd1601" >
+		<ee:transform doc:name="Transform Message" doc:id="142c4619-422f-498c-9b1e-190f15a71fb5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+ output application/json
+ ---
+ [{
+     Pid__c : payload.id,
+     Name:  payload.name[0].use,
+     BillingCity:payload.address[0].city,
+     BillingState:payload.address[0].state,
+     BillingPostalCode:payload.address[0].postalCode,
+     Phone:payload.telecom[0].value
+ }]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:upsert doc:name="Upsert" doc:id="2b34b5f5-54be-4cf5-97b4-c1139d40a528" config-ref="Salesforce_Config" objectType="Account" externalIdFieldName="Id"/>
+		<ee:transform doc:name="Transform Message" doc:id="cd491ccd-e3cf-4ef5-a2f1-23718329f119" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
