@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="GetpatientimplementationFlow" doc:id="520e0539-8b03-4a54-9ccc-cafc717827a7" >
 		<salesforce:query doc:name="Query" doc:id="3a74195e-6f13-4e9b-ba4e-1a3022274571" config-ref="Salesforce_Config">
-			<salesforce:salesforce-query ><![CDATA[SELECT pid__c,Name, BillingAddress, Fax FROM Account]]></salesforce:salesforce-query>
+			<salesforce:salesforce-query ><![CDATA[SELECT pid__c,Name, BillingAddress, phone FROM Account]]></salesforce:salesforce-query>
 		</salesforce:query>
 		<ee:transform doc:name="Transform Message" doc:id="5d67abdc-7628-4e11-ac76-241d13a0e70f" >
 			<ee:message >
